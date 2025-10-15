@@ -4,3 +4,26 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# Replit
+.replit
+.config/
+.upm/
+replit.nix
+
+# Server pricebook (don't commit to git)
+server/pricebook.json
+
+# Temporary
+tmp/
+temp/
+.cache/

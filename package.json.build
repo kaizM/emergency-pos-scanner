@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "build": "vite build",
+    "build:server": "esbuild server/index.ts --bundle --platform=node --outfile=netlify/functions/api.js --external:@octokit/rest"
+  }
+}
