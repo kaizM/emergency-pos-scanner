@@ -99,9 +99,57 @@ export function BarcodeScanner({
     Quagga.offDetected(handleDetected);
   };
 
+  // Convert UPC-E to UPC-A (for cigarettes and other short barcodes)
+  const convertUPCEtoUPCA = (upce: string): string => {
+    // Remove check digit if 8 digits, keep if 7 or 6
+    let code = upce;
+    if (code.length === 8) {
+      code = code.substring(0, 7);
+    }
+    if (code.length === 7) {
+      code = code.substring(1, 7); // Remove leading 0
+    }
+    if (code.length !== 6) return upce; // Not UPC-E
+
+    const lastDigit = parseInt(code[5]);
+    let upca = '';
+
+    if (lastDigit <= 2) {
+      // Pattern XXabc0 -> 0XX00000abc0
+      upca = '0' + code[0] + code[1] + code[5] + '0000' + code[2] + code[3] + code[4];
+    } else if (lastDigit === 3) {
+      // Pattern XXXab3 -> 0XXX000ab3
+      upca = '0' + code.substring(0, 3) + '000' + code[3] + code[4] + '3';
+    } else if (lastDigit === 4) {
+      // Pattern XXXXa4 -> 0XXXX0000a4
+      upca = '0' + code.substring(0, 4) + '00000' + code[4];
+    } else {
+      // Pattern XXXXXd (5-9) -> 0XXXXX0000d
+      upca = '0' + code.substring(0, 5) + '0000' + code[5];
+    }
+
+    // Calculate UPC-A check digit
+    let oddSum = 0, evenSum = 0;
+    for (let i = 0; i < 11; i++) {
+      if (i % 2 === 0) oddSum += parseInt(upca[i]);
+      else evenSum += parseInt(upca[i]);
+    }
+    const check = (10 - ((oddSum * 3 + evenSum) % 10)) % 10;
+    return upca + check;
+  };
+
   const handleDetected = (result: any) => {
     const now = Date.now();
-    const code = result.codeResult.code;
+    let code = result.codeResult.code;
+
+    // Convert UPC-E to UPC-A for cigarettes (Modisoft compatibility)
+    if (code.length >= 6 && code.length <= 8) {
+      const converted = convertUPCEtoUPCA(code);
+      if (converted !== code) {
+        console.log(`UPC-E ${code} converted to UPC-A ${converted}`);
+        code = converted;
+      }
+    }
 
     // Professional accuracy: Calculate error rate
     let avgError = 0;
@@ -176,7 +224,7 @@ export function BarcodeScanner({
           ${isScanning ? "border-ring" : "border-border"}
           ${scanSuccess ? "ring-4 ring-primary ring-opacity-50 scale-[1.02]" : ""}
           ${error ? "border-destructive" : ""}
-          h-[160px] md:flex-1 md:h-auto md:min-h-[500px]
+          h-[120px] md:flex-1 md:h-auto md:min-h-[500px]
         `}
         data-testid="scanner-viewport"
       >

@@ -100,64 +100,61 @@ export function ShoppingCart({
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-4 overflow-y-auto">
+        <div className="flex-1 flex flex-col gap-2 overflow-y-auto">
           {items.map((item, index) => (
             <Card
               key={item.id}
-              className="p-5 md:p-6 hover-elevate shrink-0"
+              className="p-3 md:p-6 hover-elevate shrink-0"
               data-testid={`cart-item-${index}`}
             >
-              {/* Mobile Layout - Stacked LARGER */}
-              <div className="flex flex-col gap-4 md:hidden">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-2xl leading-tight mb-2" data-testid={`text-item-name-${index}`}>
-                      {item.name}
-                    </h3>
-                    <p className="text-base font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
-                      {item.barcode}
-                    </p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-11 w-11 text-destructive hover:text-destructive shrink-0"
-                    onClick={() => onRemoveItem(item.id)}
-                    data-testid={`button-remove-${index}`}
-                  >
-                    <X className="h-6 w-6" />
-                  </Button>
+              {/* Mobile Layout - COMPACT */}
+              <div className="flex items-center justify-between gap-2 md:hidden">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-xl leading-tight mb-0.5 truncate" data-testid={`text-item-name-${index}`}>
+                    {item.name}
+                  </h3>
+                  <p className="text-xs font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
+                    {item.barcode}
+                  </p>
                 </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5">
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-12 w-12"
+                      className="h-9 w-9"
                       onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
                       data-testid={`button-decrease-${index}`}
                     >
-                      <Minus className="h-6 w-6" />
+                      <Minus className="h-4 w-4" />
                     </Button>
-                    <div className="min-w-[60px] text-center">
-                      <span className="font-bold text-3xl" data-testid={`text-quantity-${index}`}>
+                    <div className="min-w-[40px] text-center">
+                      <span className="font-bold text-2xl" data-testid={`text-quantity-${index}`}>
                         {item.quantity}
                       </span>
                     </div>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-12 w-12"
+                      className="h-9 w-9"
                       onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                       data-testid={`button-increase-${index}`}
                     >
-                      <Plus className="h-6 w-6" />
+                      <Plus className="h-4 w-4" />
                     </Button>
                   </div>
-                  <span className="font-bold text-3xl font-mono text-primary" data-testid={`text-item-price-${index}`}>
+                  <span className="font-bold text-2xl font-mono text-primary min-w-[90px] text-right" data-testid={`text-item-price-${index}`}>
                     ${(item.price * item.quantity).toFixed(2)}
                   </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 text-destructive hover:text-destructive"
+                    onClick={() => onRemoveItem(item.id)}
+                    data-testid={`button-remove-${index}`}
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
                 </div>
               </div>
 
@@ -217,18 +214,18 @@ export function ShoppingCart({
         </div>
       )}
 
-      {/* Totals Section */}
+      {/* Totals Section - COMPACT */}
       {items.length > 0 && (
-        <div className="mt-3 space-y-3 shrink-0">
-          <Card className="p-3">
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-sm md:text-base">
+        <div className="mt-2 space-y-2 shrink-0">
+          <Card className="p-2">
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-mono font-medium" data-testid="text-subtotal">
                   ${subtotal.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between text-sm md:text-base">
+              <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground">
                   Tax ({(taxRate * 100).toFixed(2)}%)
                 </span>
@@ -236,10 +233,10 @@ export function ShoppingCart({
                   ${tax.toFixed(2)}
                 </span>
               </div>
-              <div className="h-px bg-border my-1" />
+              <div className="h-px bg-border my-0.5" />
               <div className="flex justify-between items-center">
-                <span className="text-base md:text-lg font-semibold">Total</span>
-                <span className="text-2xl md:text-3xl font-bold font-mono text-primary" data-testid="text-total">
+                <span className="text-sm font-semibold">Total</span>
+                <span className="text-xl font-bold font-mono text-primary" data-testid="text-total">
                   ${total.toFixed(2)}
                 </span>
               </div>
@@ -248,8 +245,7 @@ export function ShoppingCart({
 
           <Button
             onClick={onCheckout}
-            size="lg"
-            className="w-full min-h-12 md:min-h-14 text-base md:text-lg font-bold uppercase"
+            className="w-full min-h-11 text-base font-bold uppercase"
             data-testid="button-checkout"
           >
             Checkout
