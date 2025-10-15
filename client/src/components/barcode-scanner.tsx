@@ -20,6 +20,7 @@ export function BarcodeScanner({
   const [lastDetected, setLastDetected] = useState<string>("");
   const [scanSuccess, setScanSuccess] = useState(false);
   const lastScanTime = useRef<number>(0);
+  const lastResults = useRef<string[]>([]);
 
   useEffect(() => {
     if (isScanning && scannerRef.current) {
@@ -46,14 +47,15 @@ export function BarcodeScanner({
               width: { min: 1280, ideal: 1920, max: 1920 },
               height: { min: 720, ideal: 1080, max: 1080 },
               facingMode: "environment",
-              aspectRatio: { min: 1.3, max: 1.8 },
+              aspectRatio: { min: 1, max: 2 },
             },
             area: {
-              top: "15%",
-              right: "5%",
-              left: "5%",
-              bottom: "15%",
+              top: "25%",
+              right: "25%",
+              left: "25%",
+              bottom: "25%",
             },
+            singleChannel: false,
           },
           decoder: {
             readers: [
@@ -62,23 +64,16 @@ export function BarcodeScanner({
               "ean_reader",
               "ean_8_reader",
               "code_128_reader",
-              "code_39_reader",
             ],
             multiple: false,
-            debug: {
-              drawBoundingBox: false,
-              showFrequency: false,
-              drawScanline: false,
-              showPattern: false
-            }
           },
           locate: true,
           locator: {
-            patchSize: "large",
+            patchSize: "x-small",
             halfSample: false,
           },
           numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 8),
-          frequency: 15,
+          frequency: 10,
         },
         (err) => {
           if (err) {
@@ -108,27 +103,39 @@ export function BarcodeScanner({
     const now = Date.now();
     const code = result.codeResult.code;
 
-    // Skip low-confidence reads (improves accuracy)
+    // Professional accuracy: Calculate error rate
+    let avgError = 0;
     if (result.codeResult.decodedCodes && result.codeResult.decodedCodes.length > 0) {
-      const avgError = result.codeResult.decodedCodes.reduce((sum: number, code: any) => 
+      avgError = result.codeResult.decodedCodes.reduce((sum: number, code: any) => 
         sum + (code.error || 0), 0) / result.codeResult.decodedCodes.length;
       
-      // Skip if error rate too high (improves accuracy)
-      if (avgError > 0.15) {
+      // Skip if error rate too high (professional threshold)
+      if (avgError > 0.1) {
         return;
       }
     }
 
-    // Debounce: prevent any scan for 1 second after last scan
-    if (now - lastScanTime.current < 1000) {
+    // Multi-read validation: Require 3 identical reads for confirmation
+    lastResults.current.push(code);
+    if (lastResults.current.length > 20) {
+      lastResults.current.shift();
+    }
+
+    // Count how many times this code appears in recent scans
+    const confirmCount = lastResults.current.filter(c => c === code).length;
+    
+    // Require 3 confirmations for first scan of this barcode
+    if (confirmCount < 3) {
       return;
     }
 
-    // Also prevent same barcode within 3 seconds
-    if (code === lastDetected && now - lastScanTime.current < 3000) {
+    // Debounce: prevent rapid duplicate scans
+    if (code === lastDetected && now - lastScanTime.current < 2000) {
       return;
     }
 
+    // Clear confirmation buffer for next scan
+    lastResults.current = [];
     setLastDetected(code);
     lastScanTime.current = now;
 
@@ -169,7 +176,7 @@ export function BarcodeScanner({
           ${isScanning ? "border-ring" : "border-border"}
           ${scanSuccess ? "ring-4 ring-primary ring-opacity-50 scale-[1.02]" : ""}
           ${error ? "border-destructive" : ""}
-          min-h-[300px] md:min-h-[400px]
+          min-h-[400px] md:min-h-[500px]
         `}
         data-testid="scanner-viewport"
       >
