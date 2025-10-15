@@ -168,15 +168,15 @@ export function BarcodeScanner({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col md:h-full">
       {/* Scanner Viewport */}
       <div
         className={`
-          relative flex-1 rounded-md overflow-hidden border-2 transition-all duration-200
+          relative rounded-md overflow-hidden border-2 transition-all duration-200
           ${isScanning ? "border-ring" : "border-border"}
           ${scanSuccess ? "ring-4 ring-primary ring-opacity-50 scale-[1.02]" : ""}
           ${error ? "border-destructive" : ""}
-          min-h-[400px] md:min-h-[500px]
+          h-[220px] md:flex-1 md:h-auto md:min-h-[500px]
         `}
         data-testid="scanner-viewport"
       >
@@ -238,7 +238,7 @@ export function BarcodeScanner({
         onClick={toggleScanning}
         variant={isScanning ? "destructive" : "default"}
         size="lg"
-        className="mt-4 min-h-14 text-base font-semibold"
+        className="mt-3 min-h-12 md:min-h-14 text-base font-semibold"
         data-testid={isScanning ? "button-stop-scan" : "button-start-scan"}
       >
         {isScanning ? (

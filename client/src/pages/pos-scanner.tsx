@@ -163,7 +163,7 @@ export default function POSScanner() {
       <main className="flex-1 overflow-hidden">
         <div className="h-full flex flex-col md:flex-row gap-3 md:gap-4 p-3 md:p-6 max-w-7xl mx-auto">
           {/* Scanner Section - Left Side */}
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex flex-col md:flex-1 md:min-h-0">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-xl md:text-2xl font-semibold">Scanner</h2>
               <div className="flex gap-2">
@@ -200,7 +200,7 @@ export default function POSScanner() {
           </div>
 
           {/* Cart Section - Right Side */}
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col min-h-0 md:flex-1">
             <ShoppingCart
               items={cart}
               subtotal={subtotal}
