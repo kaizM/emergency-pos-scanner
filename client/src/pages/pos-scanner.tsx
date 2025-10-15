@@ -107,9 +107,9 @@ export default function POSScanner() {
     });
 
     toast({
-      title: "Item Added",
+      title: "✓ Item Added",
       description: `${product.name} - $${product.price.toFixed(2)}`,
-      className: "bg-primary text-primary-foreground",
+      className: "bg-primary text-primary-foreground text-lg",
     });
   };
 
@@ -161,11 +161,11 @@ export default function POSScanner() {
       <Header />
       
       <main className="flex-1 overflow-hidden">
-        <div className="h-full flex flex-col md:flex-row gap-4 p-4 md:p-6 max-w-7xl mx-auto">
+        <div className="h-full flex flex-col md:flex-row gap-3 md:gap-4 p-3 md:p-6 max-w-7xl mx-auto">
           {/* Scanner Section - Left Side */}
           <div className="flex-1 flex flex-col min-h-0">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold">Scanner</h2>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-xl md:text-2xl font-semibold">Scanner</h2>
               <div className="flex gap-2">
                 <Dialog open={showUpload} onOpenChange={setShowUpload}>
                   <DialogTrigger asChild>

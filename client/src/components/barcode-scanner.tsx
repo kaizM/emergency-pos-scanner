@@ -47,11 +47,6 @@ export function BarcodeScanner({
               height: { min: 720, ideal: 1080, max: 1080 },
               facingMode: "environment",
               aspectRatio: { min: 1.3, max: 1.8 },
-              focusMode: "continuous",
-              advanced: [
-                { zoom: 1.5 },
-                { focusDistance: 0.5 }
-              ]
             },
             area: {
               top: "15%",
