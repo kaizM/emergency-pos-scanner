@@ -1,37 +1,37 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { Product } from "@shared/schema";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Pricebook operations
+  getPricebookItems(): Promise<Product[]>;
+  getPricebookItemByBarcode(barcode: string): Promise<Product | undefined>;
+  setPricebook(products: Product[]): Promise<void>;
+  clearPricebook(): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private pricebook: Map<string, Product>;
 
   constructor() {
-    this.users = new Map();
+    this.pricebook = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getPricebookItems(): Promise<Product[]> {
+    return Array.from(this.pricebook.values());
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async getPricebookItemByBarcode(barcode: string): Promise<Product | undefined> {
+    return this.pricebook.get(barcode);
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async setPricebook(products: Product[]): Promise<void> {
+    this.pricebook.clear();
+    for (const product of products) {
+      this.pricebook.set(product.barcode, product);
+    }
+  }
+
+  async clearPricebook(): Promise<void> {
+    this.pricebook.clear();
   }
 }
 
