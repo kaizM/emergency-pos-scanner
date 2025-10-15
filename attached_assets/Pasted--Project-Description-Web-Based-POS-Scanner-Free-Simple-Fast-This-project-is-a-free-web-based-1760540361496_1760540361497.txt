@@ -1,0 +1,147 @@
+✅ Project Description – Web-Based POS Scanner (Free, Simple, Fast)
+
+This project is a free web-based Point of Sale (POS) system designed for emergency use when cash registers or payment systems fail. It will run in any browser on a phone, tablet, or computer and does not require installation. It will scan barcodes using the device camera, lookup prices from a Pricebook (from Modisoft or any POS system), calculate totals with 8.25% tax, show a detailed item list, and allow checkout with manual payments in cash or using an on-site card reader. The entire project uses free tools and free hosting and is built using HTML, CSS, and JavaScript only.
+
+✅ Main Features
+
+Barcode Scanning
+
+Uses the device camera to scan barcodes.
+
+Works on mobile phones and tablets.
+
+Uses a free open-source scanning library such as QuaggaJS.
+
+Supports scanning UPC and EAN barcodes used by most retail products.
+
+Should work from multiple angles and lighting conditions.
+
+Price Lookup
+
+The app will load a Pricebook that contains barcodes, item names, and prices.
+
+The Pricebook can be imported from Modisoft or another POS as CSV or Excel, then converted to JSON for fast lookup.
+
+When a barcode is scanned, the app finds that product in the price list.
+
+If a barcode doesn’t exist in the pricebook, the system shows a message and lets the user enter the price manually.
+
+Shopping Cart System
+
+Every scanned item is automatically added to a visible shopping cart.
+
+The cart shows item name, barcode, and price.
+
+Duplicate scans increase the quantity.
+
+Option to remove items if needed.
+
+Tax and Total
+
+Shows Subtotal (total before tax).
+
+Automatically applies 8.25% sales tax (can be changed later).
+
+Shows Final Total clearly.
+
+Clearly designed for fast checkout.
+
+Payment Options
+
+The system does not process payments online.
+
+Instead, after calculating total, it gives the cashier two choices:
+
+Cash Payment – shows how much to collect and calculates change.
+
+Card Payment – instructs cashier to use the external card reader.
+
+Keeps it simple and offline on purpose.
+
+Receipts (optional future feature)
+
+Can later add small printable text receipts.
+
+Option to save orders as CSV for records.
+
+✅ Technology Used
+Component	Technology	Cost
+Frontend	HTML, CSS, JavaScript	Free
+Barcode Scanner	QuaggaJS (open source)	Free
+Pricebook File	JSON or CSV	Free
+Hosting	GitHub Pages, Netlify, or Replit	Free
+Browser Support	Chrome, Edge, Safari, Firefox	Free
+✅ How It Works (Step-by-Step Flow)
+
+Cashier opens the web app on their phone or tablet.
+
+Clicks Start Scanning to activate camera barcode scanning.
+
+Scans each product barcode using the phone camera.
+
+App matches each barcode with price in the Pricebook.
+
+Items appear in a shopping cart list on screen.
+
+Subtotal and tax are automatically calculated.
+
+Cashier clicks Checkout.
+
+App shows Grand Total and payment instructions.
+
+Cashier finishes payment outside app using:
+
+Cash (manual)
+
+Card reader already on-site
+
+App clears cart for the next customer.
+
+✅ Files in the Project
+
+The project contains four simple files:
+
+index.html – layout of the page and interface
+
+style.css – styling to make it clean and readable
+
+script.js – logic for barcode scanning and cart
+
+pricebook.json – imported Modisoft pricebook data
+
+✅ Hosting Options (Free Forever)
+
+You can host this web app completely free using:
+
+Replit for fastest startup (no setup)
+
+GitHub Pages for 100% free static hosting
+
+Netlify for drag-and-drop deployment
+
+All allow mobile access using a public URL link you can bookmark.
+
+✅ Pricebook Setup
+
+Export products from Modisoft or other POS.
+
+Convert file from Excel or CSV to JSON format.
+
+Upload it directly into the app files.
+
+Barcode scanning now identifies products instantly.
+
+✅ Advanced Barcode Goals
+
+Works under low light conditions.
+
+Reads damaged or worn barcodes.
+
+Rapid scan for busy checkout times.
+
+Continuous scanning mode for speed.
+
+If this description looks good, I can now:
+✅ Turn this into step-by-step build instructions,
+✅ OR convert this into a professional project proposal,
+✅ OR continue by building the actual code next.
