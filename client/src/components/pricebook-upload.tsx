@@ -5,9 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Upload, Check, AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { Product } from "@shared/schema";
+import * as XLSX from "xlsx";
 
 interface PricebookUploadProps {
-  onUploadComplete: () => void;
+  onUploadComplete: (products: Product[]) => void;
 }
 
 export function PricebookUpload({ onUploadComplete }: PricebookUploadProps) {
@@ -54,50 +56,77 @@ export function PricebookUpload({ onUploadComplete }: PricebookUploadProps) {
     setUploadResult(null);
 
     try {
-      const formData = new FormData();
-      formData.append("pricebook", file);
+      const arrayBuffer = await file.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: "array" });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json<any>(firstSheet);
 
-      const response = await fetch("/api/pricebook/upload", {
-        method: "POST",
-        body: formData,
+      if (!jsonData || jsonData.length === 0) {
+        throw new Error("No data found in file");
+      }
+
+      // Map columns - case insensitive search for barcode, name, price
+      const products: Product[] = jsonData.map((row) => {
+        const keys = Object.keys(row);
+        
+        // Find barcode column (priority: "Scan Code" > "Item Code" > "barcode" > "upc")
+        const barcodeKey = keys.find(k => 
+          k.toLowerCase().includes("scan code") ||
+          k.toLowerCase().includes("item code") ||
+          k.toLowerCase() === "barcode" ||
+          k.toLowerCase() === "upc"
+        ) || keys[0];
+        
+        // Find name column
+        const nameKey = keys.find(k => 
+          k.toLowerCase().includes("description") ||
+          k.toLowerCase().includes("name") ||
+          k.toLowerCase().includes("item")
+        ) || keys[1];
+        
+        // Find price column (priority: "Unit Retail" > "price" > "retail")
+        const priceKey = keys.find(k => 
+          k.toLowerCase().includes("unit retail") ||
+          k.toLowerCase().includes("retail") ||
+          k.toLowerCase() === "price"
+        ) || keys[2];
+
+        const barcode = String(row[barcodeKey] || "").trim();
+        const name = String(row[nameKey] || "Unknown").trim();
+        const price = parseFloat(String(row[priceKey] || "0").replace(/[^0-9.]/g, ""));
+
+        return { barcode, name, price };
+      }).filter(p => p.barcode && p.price > 0);
+
+      if (products.length === 0) {
+        throw new Error("No valid products found");
+      }
+
+      setUploadResult({
+        success: true,
+        message: "Pricebook loaded (session only - not saved to GitHub)",
+        itemCount: products.length,
+      });
+      
+      toast({
+        title: "Upload Successful",
+        description: `${products.length} items loaded (temporary)`,
+        className: "bg-primary text-primary-foreground",
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        setUploadResult({
-          success: true,
-          message: result.message,
-          itemCount: result.itemCount,
-        });
-        toast({
-          title: "Upload Successful",
-          description: `${result.itemCount} items loaded into pricebook`,
-          className: "bg-primary text-primary-foreground",
-        });
-        setTimeout(() => {
-          onUploadComplete();
-        }, 1500);
-      } else {
-        setUploadResult({
-          success: false,
-          message: result.message || "Upload failed",
-        });
-        toast({
-          title: "Upload Failed",
-          description: result.message || "Could not process pricebook",
-          variant: "destructive",
-        });
-      }
+      setTimeout(() => {
+        onUploadComplete(products);
+      }, 1500);
+      
     } catch (error) {
       console.error("Upload error:", error);
       setUploadResult({
         success: false,
-        message: "Network error. Please try again.",
+        message: error instanceof Error ? error.message : "Failed to process file",
       });
       toast({
         title: "Upload Error",
-        description: "Could not connect to server",
+        description: "Could not parse pricebook file",
         variant: "destructive",
       });
     } finally {
@@ -172,9 +201,9 @@ export function PricebookUpload({ onUploadComplete }: PricebookUploadProps) {
 
       <div className="text-xs text-muted-foreground space-y-1">
         <p className="font-medium">Expected format:</p>
-        <p>• Column headers: Barcode, Name, Price</p>
+        <p>• Scan Code (UPC), Item Description, Unit Retail</p>
         <p>• First row should contain headers</p>
-        <p>• Barcodes should be UPC/EAN format</p>
+        <p>• Note: Changes are temporary (session only)</p>
       </div>
     </div>
   );

@@ -20,8 +20,8 @@ npm-debug.log*
 .upm/
 replit.nix
 
-# Server pricebook (don't commit to git)
-server/pricebook.json
+# Server pricebook now stored in GitHub for free hosting
+# server/pricebook.json
 
 # Temporary
 tmp/

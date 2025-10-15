@@ -59,12 +59,21 @@ Server runs on `http://localhost:5000`
 npm run build
 ```
 
-## 📊 Pricebook Format
+## 📊 Pricebook Storage
 
-Your Excel/CSV file should have these columns:
+**FREE GitHub Storage** - Your pricebook is stored in GitHub and auto-loads when the app starts!
+
+- ✅ **10,463 products** pre-loaded from GitHub
+- ✅ **100% Free** - No database costs
+- ✅ **Always available** - Loads automatically
+- ✅ **Offline ready** - Works after first load
+
+### Excel/CSV Format
+
+Your pricebook file should have these columns:
 
 - **Scan Code** (UPC) - Primary barcode
-- **Item Code** - Fallback if UPC empty
+- **Item Code** - Fallback if UPC empty  
 - **Item Description** - Product name
 - **Unit Retail** - Retail price
 
@@ -74,6 +83,8 @@ Scan Code,Item Description,Item Code,Unit Retail
 123456789012,Premium Coffee,COFFEE01,4.99
 987654321098,Energy Drink,DRINK05,2.49
 ```
+
+The app automatically detects these columns (case-insensitive).
 
 ## 🔄 Workflow
 

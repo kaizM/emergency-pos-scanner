@@ -62,22 +62,23 @@ git push -u origin main --force
 
 ## Important Notes
 
-### ⚠️ Before Deploying
+### ⚠️ Important: Pricebook Storage
 
-1. **Pricebook**: Your pricebook with 10,463 products is in `server/pricebook.json`
-   - This file is NOT committed to GitHub (in .gitignore)
-   - You'll need to re-upload your Excel file in production
-   - Or manually add pricebook.json to your repository if you want it auto-loaded
+Your pricebook is now stored **directly in GitHub** for free hosting:
 
-2. **Environment**: The app runs on Netlify's static hosting
-   - Frontend will be fully functional
-   - For full backend features, consider:
-     - Netlify Functions (for serverless API)
-     - Or deploy backend separately (Heroku, Railway, etc.)
+1. **Auto-loads from GitHub**: 
+   - File: `server/pricebook.json` (10,463 products)
+   - URL: `https://raw.githubusercontent.com/kaizM/emergency-pos-scanner/main/server/pricebook.json`
+   - Loads automatically when app starts
 
-3. **Pricebook in Production**:
-   - Option A: Upload Excel via the app (recommended)
-   - Option B: Include pricebook.json in git (remove from .gitignore)
+2. **No backend needed**:
+   - Everything runs client-side on Netlify
+   - Completely free forever
+   - Works offline after first load
+
+3. **Updating the pricebook**:
+   - Option A: Upload new Excel file via app (temporary, session only)
+   - Option B: Update `server/pricebook.json` in GitHub and commit (permanent)
 
 ### 🔧 Configuration Files
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BarcodeScanner } from "@/components/barcode-scanner";
 import { ShoppingCart } from "@/components/shopping-cart";
 import { PaymentFlow } from "@/components/payment-flow";
@@ -7,7 +7,7 @@ import { PricebookUpload } from "@/components/pricebook-upload";
 import { Header } from "@/components/header";
 import { CartItem, Product } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Settings } from "lucide-react";
+import { Upload, Settings, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,6 +17,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+// GitHub raw URL for pricebook
+const GITHUB_PRICEBOOK_URL = "https://raw.githubusercontent.com/kaizM/emergency-pos-scanner/main/server/pricebook.json";
+
 export default function POSScanner() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isScanning, setIsScanning] = useState(false);
@@ -24,41 +27,60 @@ export default function POSScanner() {
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [lastScannedBarcode, setLastScannedBarcode] = useState<string>("");
   const [showUpload, setShowUpload] = useState(false);
+  const [pricebook, setPricebook] = useState<Product[]>([]);
+  const [loadingPricebook, setLoadingPricebook] = useState(true);
   const { toast } = useToast();
 
   const TAX_RATE = 0.0825;
 
+  // Auto-load pricebook from GitHub on startup
+  useEffect(() => {
+    const loadPricebookFromGitHub = async () => {
+      try {
+        const response = await fetch(GITHUB_PRICEBOOK_URL);
+        if (response.ok) {
+          const data = await response.json();
+          setPricebook(data);
+          toast({
+            title: "Pricebook Loaded",
+            description: `${data.length.toLocaleString()} products ready from GitHub`,
+            className: "bg-primary text-primary-foreground",
+          });
+        } else {
+          throw new Error("Failed to fetch pricebook");
+        }
+      } catch (error) {
+        console.error("Error loading pricebook from GitHub:", error);
+        toast({
+          title: "Pricebook Not Available",
+          description: "Upload Excel file to use scanner",
+          variant: "destructive",
+        });
+      } finally {
+        setLoadingPricebook(false);
+      }
+    };
+
+    loadPricebookFromGitHub();
+  }, []);
+
   const handleBarcodeDetected = async (barcode: string) => {
     setLastScannedBarcode(barcode);
     
-    try {
-      const response = await fetch(`/api/pricebook/lookup/${barcode}`);
-      
-      if (!response.ok) {
-        if (response.status === 404) {
-          toast({
-            title: "Item Not Found",
-            description: `Barcode ${barcode} not in pricebook. Enter price manually.`,
-            variant: "destructive",
-          });
-          setShowManualEntry(true);
-          return;
-        }
-        throw new Error("Failed to lookup product");
-      }
-
-      const product: Product = await response.json();
-      addToCart(product);
-      
-    } catch (error) {
-      console.error("Error looking up barcode:", error);
+    // Look up product in local pricebook
+    const product = pricebook.find(p => p.barcode === barcode);
+    
+    if (!product) {
       toast({
-        title: "Lookup Failed",
-        description: "Could not connect to pricebook. Try manual entry.",
+        title: "Item Not Found",
+        description: `Barcode ${barcode} not in pricebook. Enter price manually.`,
         variant: "destructive",
       });
       setShowManualEntry(true);
+      return;
     }
+
+    addToCart(product);
   };
 
   const addToCart = (product: Product | { barcode: string; name: string; price: number }) => {
@@ -159,7 +181,12 @@ export default function POSScanner() {
                     <DialogHeader>
                       <DialogTitle>Upload Pricebook</DialogTitle>
                     </DialogHeader>
-                    <PricebookUpload onUploadComplete={() => setShowUpload(false)} />
+                    <PricebookUpload 
+                      onUploadComplete={(products) => {
+                        setPricebook(products);
+                        setShowUpload(false);
+                      }} 
+                    />
                   </DialogContent>
                 </Dialog>
               </div>

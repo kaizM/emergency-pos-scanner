@@ -15,13 +15,21 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
-### October 15, 2025 - Latest Update
-- **Enhanced scanner**: Advanced Modisoft-level barcode detection with multi-angle, any-distance scanning
-- **Auto-loaded pricebook**: 10,463 products from user's Vendors Price Book using UPC codes and retail prices
-- **New Transaction button**: Automatic cart clear and reset after every payment completion
-- **Improved camera**: Higher resolution (1920x1080), better autofocus, optimized detection area
-- **Multiple barcode formats**: UPC (primary), EAN, Code 128, Code 39, Codabar, i2of5
-- **Smart column detection**: Auto-detects "Scan Code" (UPC), "Item Code" (fallback), "Unit Retail" (price)
+### October 15, 2025 - GitHub Storage Update
+- **FREE GitHub hosting**: Pricebook stored in GitHub, auto-loads from raw URL
+- **No backend needed**: Everything runs client-side on Netlify (100% free)
+- **Client-side parsing**: Excel/CSV upload works in browser using xlsx library
+- **10,463 products**: Pre-loaded from `server/pricebook.json` on GitHub
+- **Netlify config fixed**: Changed publish directory from `dist` to `dist/public`
+- **1-second scan delay**: Prevents rapid duplicate scans with 3-second barcode debouncing
+
+### October 15, 2025 - Enhanced Scanner
+- **Advanced scanner**: Modisoft-level barcode detection with multi-angle, any-distance scanning
+- **Auto-loaded pricebook**: 10,463 products from user's Vendors Price Book using UPC codes
+- **New Transaction button**: Automatic cart clear and reset after payment completion
+- **High resolution camera**: 1920x1080 with optimized autofocus and detection area
+- **Multiple formats**: UPC, EAN, Code 128, Code 39, Codabar, i2of5
+- **Smart column detection**: Auto-detects "Scan Code", "Item Code", "Unit Retail"
 
 ### October 15, 2025 - Initial Release
 - Initial implementation of emergency POS scanner system
@@ -41,10 +49,10 @@ This application provides a fast, mobile-friendly emergency checkout system with
 - **Manual Entry**: `client/src/components/manual-entry-dialog.tsx` - Manual price entry for missing items
 - **Upload**: `client/src/components/pricebook-upload.tsx` - Pricebook file upload
 
-### Backend (Express + TypeScript)
-- **Routes**: `server/routes.ts` - API endpoints for pricebook and product lookup
-- **Storage**: `server/storage.ts` - In-memory storage for pricebook data
+### Backend (Minimal - Optional)
+- **Pricebook**: `server/pricebook.json` - 10,463 products stored in GitHub
 - **Schema**: `shared/schema.ts` - Shared type definitions for Product, CartItem, Transaction
+- Note: Backend API no longer needed - everything runs client-side!
 
 ### Key Features
 1. **Barcode Scanning**
@@ -98,11 +106,13 @@ Based on Material Design principles adapted for retail/POS environments:
 
 ## Data Flow
 
-1. **Pricebook Upload**:
-   - User uploads Excel/CSV → Backend parses file → Validates data → Stores in memory
+1. **Pricebook Loading**:
+   - App starts → Fetches from GitHub raw URL → Stores in React state (local memory)
+   - Or: User uploads Excel/CSV → Parses in browser → Updates local state (temporary)
 
 2. **Barcode Scan**:
-   - Camera detects barcode → Frontend sends to backend → Backend looks up price → Returns product → Adds to cart
+   - Camera detects barcode → Looks up in local pricebook → Adds to cart
+   - No backend API calls needed!
 
 3. **Manual Entry**:
    - Barcode not found → Modal opens → User enters name/price → Adds to cart
