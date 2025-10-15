@@ -42,9 +42,9 @@ export function ShoppingCart({
   return (
     <div className="flex flex-col h-full">
       {/* Cart Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-semibold flex items-center gap-2">
-          <CartIcon className="h-6 w-6" />
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
+          <CartIcon className="h-5 w-5 md:h-6 md:w-6" />
           Cart
           {items.length > 0 && (
             <Badge variant="secondary" className="ml-1">
@@ -219,16 +219,16 @@ export function ShoppingCart({
 
       {/* Totals Section */}
       {items.length > 0 && (
-        <div className="mt-4 space-y-4">
-          <Card className="p-4">
-            <div className="space-y-2">
-              <div className="flex justify-between text-base">
+        <div className="mt-3 space-y-3 shrink-0">
+          <Card className="p-3">
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-sm md:text-base">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-mono font-medium" data-testid="text-subtotal">
                   ${subtotal.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between text-base">
+              <div className="flex justify-between text-sm md:text-base">
                 <span className="text-muted-foreground">
                   Tax ({(taxRate * 100).toFixed(2)}%)
                 </span>
@@ -236,10 +236,10 @@ export function ShoppingCart({
                   ${tax.toFixed(2)}
                 </span>
               </div>
-              <div className="h-px bg-border my-2" />
+              <div className="h-px bg-border my-1" />
               <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold">Total</span>
-                <span className="text-3xl font-bold font-mono text-primary" data-testid="text-total">
+                <span className="text-base md:text-lg font-semibold">Total</span>
+                <span className="text-2xl md:text-3xl font-bold font-mono text-primary" data-testid="text-total">
                   ${total.toFixed(2)}
                 </span>
               </div>
@@ -249,7 +249,7 @@ export function ShoppingCart({
           <Button
             onClick={onCheckout}
             size="lg"
-            className="w-full min-h-14 text-lg font-bold uppercase"
+            className="w-full min-h-12 md:min-h-14 text-base md:text-lg font-bold uppercase"
             data-testid="button-checkout"
           >
             Checkout
