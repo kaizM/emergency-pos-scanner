@@ -1,6 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { storage } from "./storage";
+import { readFileSync, existsSync } from "fs";
+import { Product } from "@shared/schema";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +40,19 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Auto-load pricebook if it exists
+  const pricebookPath = "server/pricebook.json";
+  if (existsSync(pricebookPath)) {
+    try {
+      const pricebookData = readFileSync(pricebookPath, "utf-8");
+      const products: Product[] = JSON.parse(pricebookData);
+      await storage.setPricebook(products);
+      log(`✅ Auto-loaded ${products.length} products from pricebook`);
+    } catch (error) {
+      log(`⚠️  Failed to auto-load pricebook: ${error}`);
+    }
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

@@ -111,6 +111,7 @@ export default function POSScanner() {
   const clearCart = () => {
     setCart([]);
     setShowPayment(false);
+    setIsScanning(false);
     toast({
       title: "Cart Cleared",
       description: "Ready for next customer",

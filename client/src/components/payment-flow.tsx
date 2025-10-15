@@ -40,7 +40,8 @@ export function PaymentFlow({
       setTimeout(() => {
         onComplete();
         onClose();
-      }, 2000);
+        setCashAmount("");
+      }, 2500);
     }
   };
 
@@ -49,7 +50,7 @@ export function PaymentFlow({
     setTimeout(() => {
       onComplete();
       onClose();
-    }, 2000);
+    }, 2500);
   };
 
   const addToAmount = (value: number) => {
@@ -226,16 +227,27 @@ export function PaymentFlow({
 
           {/* Payment Complete */}
           {step === "complete" && (
-            <div className="py-8 text-center space-y-4">
+            <div className="py-8 text-center space-y-6">
               <div className="mx-auto w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center">
                 <Check className="h-10 w-10 text-primary" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-primary">Payment Complete!</h3>
                 <p className="text-muted-foreground mt-2">
-                  Transaction successful. Cart will be cleared.
+                  Transaction successful. Ready for next customer.
                 </p>
               </div>
+              <Button
+                onClick={() => {
+                  onComplete();
+                  onClose();
+                }}
+                size="lg"
+                className="w-full"
+                data-testid="button-new-transaction"
+              >
+                Start New Transaction
+              </Button>
             </div>
           )}
         </div>
