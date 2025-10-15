@@ -1,0 +1,144 @@
+10:41:30 AM: build-image version: be5354c64a29dc4cf1de3a594c21978d9a70e833 (noble)
+10:41:30 AM: buildbot version: be5354c64a29dc4cf1de3a594c21978d9a70e833
+10:41:31 AM: Fetching cached dependencies
+10:41:31 AM: Failed to fetch cache, continuing with build
+10:41:31 AM: Starting to prepare the repo for build
+10:41:31 AM: No cached dependencies found. Cloning fresh repo
+10:41:31 AM: git clone --filter=blob:none https://github.com/kaizM/emergency-pos-scanner
+10:41:31 AM: Preparing Git Reference refs/heads/main
+10:41:33 AM: Starting to install dependencies
+10:41:34 AM: Downloading and installing node v20.19.5...
+10:41:34 AM: Downloading https://nodejs.org/dist/v20.19.5/node-v20.19.5-linux-x64.tar.xz...
+10:41:35 AM: Computing checksum with sha256sum
+10:41:35 AM: Checksums matched!
+10:41:37 AM: Now using node v20.19.5 (npm v10.8.2)
+10:41:37 AM: Enabling Node.js Corepack
+10:41:37 AM: Started restoring cached build plugins
+10:41:37 AM: Finished restoring cached build plugins
+10:41:37 AM: Started restoring cached corepack dependencies
+10:41:37 AM: Finished restoring cached corepack dependencies
+10:41:37 AM: No npm workspaces detected
+10:41:37 AM: Started restoring cached node modules
+10:41:37 AM: Finished restoring cached node modules
+10:41:37 AM: Installing npm packages using npm version 10.8.2
+10:41:38 AM: npm warn deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+10:41:39 AM: npm warn deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+10:41:39 AM: npm warn deprecated har-validator@5.1.5: this library is no longer supported
+10:41:40 AM: npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+10:41:40 AM: npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+10:41:40 AM: npm warn deprecated @babel/polyfill@7.12.1: 🚨 This package has been deprecated in favor of separate inclusion of a polyfill and regenerator-runtime (when needed). See the @babel/polyfill docs (https://babeljs.io/docs/en/babel-polyfill) for more information.
+10:41:41 AM: npm warn deprecated core-js@2.6.12: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+10:41:42 AM: added 576 packages in 6s
+10:41:42 AM: npm packages installed
+10:41:43 AM: Successfully installed dependencies
+10:41:43 AM: Starting build script
+10:41:43 AM: Detected 1 framework(s)
+10:41:43 AM: "vite" at version "5.4.20"
+10:41:43 AM: Section completed: initializing
+10:41:45 AM: ​
+10:41:45 AM: Netlify Build                                                 
+10:41:45 AM: ────────────────────────────────────────────────────────────────
+10:41:45 AM: ​
+10:41:45 AM: ❯ Version
+10:41:45 AM:   @netlify/build 35.1.10
+10:41:45 AM: ​
+10:41:45 AM: ❯ Flags
+10:41:45 AM:   accountId: 680bc3bf33efbe6f9c105656
+10:41:45 AM:   baseRelDir: true
+10:41:45 AM:   buildId: 68efc0a9925ec5225c62a21e
+10:41:45 AM:   deployId: 68efc0a9925ec5225c62a220
+10:41:45 AM: ​
+10:41:45 AM: ❯ Current directory
+10:41:45 AM:   /opt/build/repo
+10:41:45 AM: ​
+10:41:45 AM: ❯ Config file
+10:41:45 AM:   /opt/build/repo/netlify.toml
+10:41:45 AM: ​
+10:41:45 AM: ❯ Context
+10:41:45 AM:   production
+10:41:45 AM: ​
+10:41:45 AM: ❯ Installing extensions
+10:41:45 AM:    - neon
+10:42:16 AM: Post processing - redirect rules
+10:42:16 AM: Post processing done
+10:42:16 AM: Section completed: postprocessing
+10:42:16 AM: Skipping form detection
+10:42:16 AM: Post processing - header rules
+10:42:17 AM: Site is live ✨
+10:42:16 AM: Starting post processing
+10:42:10 AM: ​
+10:42:10 AM: ❯ Loading extensions
+10:42:10 AM:    - neon
+10:42:12 AM: ​
+10:42:12 AM: build.command from netlify.toml                               
+10:42:12 AM: ────────────────────────────────────────────────────────────────
+10:42:12 AM: ​
+10:42:12 AM: $ npm run build
+10:42:12 AM: > rest-express@1.0.0 build
+10:42:12 AM: > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+10:42:12 AM: vite v5.4.20 building for production...
+10:42:13 AM: transforming...
+10:42:13 AM: Browserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+10:42:13 AM:   npx update-browserslist-db@latest
+10:42:13 AM:   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+10:42:16 AM: A PostCSS plugin did not pass the `from` option to `postcss.parse`. This may cause imported assets to be incorrectly transformed. If you've recently added a PostCSS plugin that raised this warning, please contact the package author to fix the issue.
+✓ 1723 modules transformed.
+10:42:16 AM: rendering chunks...
+10:42:16 AM: computing gzip size...
+10:42:16 AM: ../dist/public/index.html                   0.93 kB │ gzip:   0.51 kB
+10:42:16 AM: ../dist/public/assets/index-DmFIsT1j.css   72.03 kB │ gzip:  11.60 kB
+10:42:16 AM: ../dist/public/assets/index-DD1ZX0tF.js   475.99 kB │ gzip: 147.31 kB
+10:42:16 AM: ✓ built in 3.09s
+10:42:16 AM:   dist/index.js  10.9kb
+10:42:16 AM: ⚡ Done in 8ms
+10:42:16 AM: ​
+10:42:16 AM: (build.command completed in 4.2s)
+10:42:16 AM: ​
+10:42:16 AM: Functions bundling                                            
+10:42:16 AM: ────────────────────────────────────────────────────────────────
+10:42:16 AM: ​
+10:42:16 AM: The Netlify Functions setting targets a non-existing directory: netlify/functions
+10:42:16 AM: ​
+10:42:16 AM: (Functions bundling completed in 1ms)
+10:42:16 AM: ​
+10:42:16 AM: Deploy site                                                   
+10:42:16 AM: ────────────────────────────────────────────────────────────────
+10:42:16 AM: ​
+10:42:16 AM: Starting to deploy site from 'dist'
+10:42:16 AM: Calculating files to upload
+10:42:16 AM: 0 new file(s) to upload
+10:42:16 AM: 0 new function(s) to upload
+10:42:16 AM: Section completed: deploying
+10:42:16 AM: Site deploy was successfully initiated
+10:42:16 AM: ​
+10:42:16 AM: (Deploy site completed in 124ms)
+10:42:17 AM: ​
+10:42:17 AM: Netlify Build Complete                                        
+10:42:17 AM: ────────────────────────────────────────────────────────────────
+10:42:17 AM: ​
+10:42:17 AM: (Netlify Build completed in 32.1s)
+10:42:17 AM: Caching artifacts
+10:42:17 AM: Started saving node modules
+10:42:17 AM: Finished saving node modules
+10:42:17 AM: Started saving build plugins
+10:42:17 AM: Finished saving build plugins
+10:42:17 AM: Started saving bun cache
+10:42:17 AM: Finished saving bun cache
+10:42:17 AM: Started saving go cache
+10:42:18 AM: Finished saving go cache
+10:42:18 AM: Started saving python cache
+10:42:19 AM: Finished saving python cache
+10:42:19 AM: Started saving ruby cache
+10:42:20 AM: Finished saving ruby cache
+10:42:20 AM: Started saving corepack cache
+10:42:20 AM: Finished saving corepack cache
+10:42:20 AM: Started saving emacs cask dependencies
+10:42:20 AM: Finished saving emacs cask dependencies
+10:42:20 AM: Started saving maven dependencies
+10:42:20 AM: Finished saving maven dependencies
+10:42:20 AM: Started saving boot dependencies
+10:42:20 AM: Finished saving boot dependencies
+10:42:20 AM: Started saving rust rustup cache
+10:42:20 AM: Finished saving rust rustup cache
+10:42:21 AM: Build script success
+10:42:21 AM: Section completed: building
