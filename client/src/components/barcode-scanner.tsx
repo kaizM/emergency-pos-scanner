@@ -105,8 +105,13 @@ export function BarcodeScanner({
     const now = Date.now();
     const code = result.codeResult.code;
 
-    // Debounce: only process same barcode once per 2 seconds
-    if (code === lastDetected && now - lastScanTime.current < 2000) {
+    // Debounce: prevent any scan for 1 second after last scan
+    if (now - lastScanTime.current < 1000) {
+      return;
+    }
+
+    // Also prevent same barcode within 3 seconds
+    if (code === lastDetected && now - lastScanTime.current < 3000) {
       return;
     }
 
