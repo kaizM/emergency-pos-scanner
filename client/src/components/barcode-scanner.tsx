@@ -19,6 +19,7 @@ export function BarcodeScanner({
   const [error, setError] = useState<string>("");
   const [lastDetected, setLastDetected] = useState<string>("");
   const [scanSuccess, setScanSuccess] = useState(false);
+  const [scanBlocked, setScanBlocked] = useState(false);
   const lastScanTime = useRef<number>(0);
   const lastResults = useRef<string[]>([]);
 
@@ -139,6 +140,11 @@ export function BarcodeScanner({
   };
 
   const handleDetected = (result: any) => {
+    // GLOBAL BLOCK: Prevent ANY scan if blocked
+    if (scanBlocked) {
+      return;
+    }
+
     const now = Date.now();
     let code = result.codeResult.code;
 
@@ -177,15 +183,16 @@ export function BarcodeScanner({
       return;
     }
 
-    // Debounce: prevent same barcode within 3 seconds
-    if (code === lastDetected && now - lastScanTime.current < 3000) {
-      return;
-    }
-
     // Clear confirmation buffer for next scan
     lastResults.current = [];
     setLastDetected(code);
     lastScanTime.current = now;
+
+    // BLOCK ALL SCANS for 3 seconds
+    setScanBlocked(true);
+    setTimeout(() => {
+      setScanBlocked(false);
+    }, 3000);
 
     // Visual and audio feedback
     setScanSuccess(true);
@@ -224,7 +231,7 @@ export function BarcodeScanner({
           ${isScanning ? "border-ring" : "border-border"}
           ${scanSuccess ? "ring-4 ring-primary ring-opacity-50 scale-[1.02]" : ""}
           ${error ? "border-destructive" : ""}
-          h-[120px] md:flex-1 md:h-auto md:min-h-[500px]
+          h-[100px] md:flex-1 md:h-auto md:min-h-[500px]
         `}
         data-testid="scanner-viewport"
       >
@@ -235,21 +242,30 @@ export function BarcodeScanner({
         />
 
         {/* Scanner Active Overlay */}
-        {isScanning && (
+        {isScanning && !scanBlocked && (
           <div className="absolute inset-0 pointer-events-none">
             {/* Corner Guides */}
-            <div className="absolute top-4 left-4 w-12 h-12 border-t-4 border-l-4 border-ring rounded-tl-lg" />
-            <div className="absolute top-4 right-4 w-12 h-12 border-t-4 border-r-4 border-ring rounded-tr-lg" />
-            <div className="absolute bottom-4 left-4 w-12 h-12 border-b-4 border-l-4 border-ring rounded-bl-lg" />
-            <div className="absolute bottom-4 right-4 w-12 h-12 border-b-4 border-r-4 border-ring rounded-br-lg" />
+            <div className="absolute top-2 left-2 w-8 h-8 border-t-4 border-l-4 border-ring rounded-tl-lg" />
+            <div className="absolute top-2 right-2 w-8 h-8 border-t-4 border-r-4 border-ring rounded-tr-lg" />
+            <div className="absolute bottom-2 left-2 w-8 h-8 border-b-4 border-l-4 border-ring rounded-bl-lg" />
+            <div className="absolute bottom-2 right-2 w-8 h-8 border-b-4 border-r-4 border-ring rounded-br-lg" />
 
             {/* Center Scan Line */}
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3/4 h-1 bg-ring animate-pulse" />
 
             {/* Active Indicator */}
-            <div className="absolute top-2 right-2 flex items-center gap-2 bg-ring/90 text-white px-3 py-1.5 rounded-full">
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-ring/90 text-white px-3 py-1 rounded-full text-xs font-bold">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              <span className="text-xs font-medium">SCANNING</span>
+              READY
+            </div>
+          </div>
+        )}
+
+        {/* Blocked Overlay */}
+        {isScanning && scanBlocked && (
+          <div className="absolute inset-0 pointer-events-none bg-amber-500/20">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-amber-500/90 text-white px-4 py-2 rounded-lg text-center">
+              <span className="text-sm font-bold">WAIT 3 SEC</span>
             </div>
           </div>
         )}

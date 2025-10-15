@@ -41,13 +41,13 @@ export function ShoppingCart({
 }: ShoppingCartProps) {
   return (
     <div className="flex flex-col h-full">
-      {/* Cart Header - COMPACT */}
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg md:text-2xl font-semibold flex items-center gap-1.5">
-          <CartIcon className="h-4 w-4 md:h-6 md:w-6" />
+      {/* Cart Header - PROFESSIONAL */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+          <CartIcon className="h-6 w-6 md:h-8 md:w-8" />
           Cart
           {items.length > 0 && (
-            <Badge variant="secondary" className="ml-1 text-xs">
+            <Badge variant="secondary" className="ml-2 text-base px-3 py-1">
               {items.reduce((sum, item) => sum + item.quantity, 0)}
             </Badge>
           )}
@@ -58,11 +58,11 @@ export function ShoppingCart({
             <AlertDialogTrigger asChild>
               <Button
                 variant="outline"
-                size="sm"
-                className="h-8 text-xs md:h-9 md:text-sm"
+                size="lg"
+                className="h-12 text-base"
                 data-testid="button-clear-cart"
               >
-                <Trash2 className="h-3 w-3 md:h-4 md:w-4 mr-1.5" />
+                <Trash2 className="h-5 w-5 mr-2" />
                 Clear
               </Button>
             </AlertDialogTrigger>
@@ -101,61 +101,64 @@ export function ShoppingCart({
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-2 overflow-y-auto">
+        <div className="flex-1 flex flex-col gap-3 overflow-y-auto">
           {items.map((item, index) => (
             <Card
               key={item.id}
-              className="p-3 md:p-6 hover-elevate shrink-0"
+              className="p-4 md:p-6 hover-elevate shrink-0"
               data-testid={`cart-item-${index}`}
             >
-              {/* Mobile Layout - COMPACT */}
-              <div className="flex items-center justify-between gap-2 md:hidden">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-xl leading-tight mb-0.5 truncate" data-testid={`text-item-name-${index}`}>
-                    {item.name}
-                  </h3>
-                  <p className="text-xs font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
-                    {item.barcode}
-                  </p>
+              {/* Mobile Layout - PROFESSIONAL POS */}
+              <div className="flex flex-col gap-3 md:hidden">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-2xl leading-tight mb-1" data-testid={`text-item-name-${index}`}>
+                      {item.name}
+                    </h3>
+                    <p className="text-sm font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
+                      {item.barcode}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-12 w-12 text-destructive hover:text-destructive shrink-0"
+                    onClick={() => onRemoveItem(item.id)}
+                    data-testid={`button-remove-${index}`}
+                  >
+                    <X className="h-7 w-7" />
+                  </Button>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <div className="flex items-center gap-1.5">
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-9 w-9"
+                      className="h-14 w-14"
                       onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
                       data-testid={`button-decrease-${index}`}
                     >
-                      <Minus className="h-4 w-4" />
+                      <Minus className="h-6 w-6" />
                     </Button>
-                    <div className="min-w-[40px] text-center">
-                      <span className="font-bold text-2xl" data-testid={`text-quantity-${index}`}>
+                    <div className="min-w-[70px] text-center">
+                      <span className="font-bold text-4xl" data-testid={`text-quantity-${index}`}>
                         {item.quantity}
                       </span>
                     </div>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-9 w-9"
+                      className="h-14 w-14"
                       onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                       data-testid={`button-increase-${index}`}
                     >
-                      <Plus className="h-4 w-4" />
+                      <Plus className="h-6 w-6" />
                     </Button>
                   </div>
-                  <span className="font-bold text-2xl font-mono text-primary min-w-[90px] text-right" data-testid={`text-item-price-${index}`}>
+                  <span className="font-bold text-4xl font-mono text-primary" data-testid={`text-item-price-${index}`}>
                     ${(item.price * item.quantity).toFixed(2)}
                   </span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-9 w-9 text-destructive hover:text-destructive"
-                    onClick={() => onRemoveItem(item.id)}
-                    data-testid={`button-remove-${index}`}
-                  >
-                    <X className="h-5 w-5" />
-                  </Button>
                 </div>
               </div>
 
@@ -215,29 +218,29 @@ export function ShoppingCart({
         </div>
       )}
 
-      {/* Totals Section - COMPACT */}
+      {/* Totals Section - PROFESSIONAL */}
       {items.length > 0 && (
-        <div className="mt-2 space-y-2 shrink-0">
-          <Card className="p-2">
-            <div className="space-y-1">
-              <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-mono font-medium" data-testid="text-subtotal">
+        <div className="mt-4 space-y-4 shrink-0">
+          <Card className="p-4">
+            <div className="space-y-3">
+              <div className="flex justify-between text-lg">
+                <span className="text-muted-foreground font-medium">Subtotal</span>
+                <span className="font-mono font-bold" data-testid="text-subtotal">
                   ${subtotal.toFixed(2)}
                 </span>
               </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">
+              <div className="flex justify-between text-lg">
+                <span className="text-muted-foreground font-medium">
                   Tax ({(taxRate * 100).toFixed(2)}%)
                 </span>
-                <span className="font-mono font-medium" data-testid="text-tax">
+                <span className="font-mono font-bold" data-testid="text-tax">
                   ${tax.toFixed(2)}
                 </span>
               </div>
-              <div className="h-px bg-border my-0.5" />
+              <div className="h-px bg-border my-2" />
               <div className="flex justify-between items-center">
-                <span className="text-sm font-semibold">Total</span>
-                <span className="text-xl font-bold font-mono text-primary" data-testid="text-total">
+                <span className="text-2xl font-bold">Total</span>
+                <span className="text-4xl font-bold font-mono text-primary" data-testid="text-total">
                   ${total.toFixed(2)}
                 </span>
               </div>
@@ -246,7 +249,8 @@ export function ShoppingCart({
 
           <Button
             onClick={onCheckout}
-            className="w-full min-h-11 text-base font-bold uppercase"
+            size="lg"
+            className="w-full min-h-16 text-xl font-bold uppercase"
             data-testid="button-checkout"
           >
             Checkout
