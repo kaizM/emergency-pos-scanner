@@ -41,13 +41,13 @@ export function ShoppingCart({
 }: ShoppingCartProps) {
   return (
     <div className="flex flex-col h-full">
-      {/* Cart Header */}
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl md:text-2xl font-semibold flex items-center gap-2">
-          <CartIcon className="h-5 w-5 md:h-6 md:w-6" />
+      {/* Cart Header - COMPACT */}
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-lg md:text-2xl font-semibold flex items-center gap-1.5">
+          <CartIcon className="h-4 w-4 md:h-6 md:w-6" />
           Cart
           {items.length > 0 && (
-            <Badge variant="secondary" className="ml-1">
+            <Badge variant="secondary" className="ml-1 text-xs">
               {items.reduce((sum, item) => sum + item.quantity, 0)}
             </Badge>
           )}
@@ -59,9 +59,10 @@ export function ShoppingCart({
               <Button
                 variant="outline"
                 size="sm"
+                className="h-8 text-xs md:h-9 md:text-sm"
                 data-testid="button-clear-cart"
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-3 w-3 md:h-4 md:w-4 mr-1.5" />
                 Clear
               </Button>
             </AlertDialogTrigger>

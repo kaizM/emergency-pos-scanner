@@ -15,14 +15,14 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
-### October 15, 2025 - Mobile Layout Fixed + Professional Scanner
-- **Mobile layout optimized**: Scanner 220px (was 400px), cart gets 65% of screen, see 3-4 items without scrolling
-- **BIGGER cart text**: 32px names, 36px quantities/prices - easy to read from distance
+### October 15, 2025 - Cigarette UPC-E Fix + Ultra-Compact Mobile UI
+- **Cigarette barcodes FIXED**: UPC-E to UPC-A auto-conversion for Modisoft pricebook compatibility
+- **Marlboro/Camel/Newport**: Short UPC-E codes (6-8 digits) now convert to full UPC-A (12 digits)
+- **Gilbarco compatible**: Same conversion algorithm as retail POS systems
+- **Ultra-compact mobile**: Scanner 120px (was 400px), cart items 60px each, see 5-6 items without scrolling
+- **3-second scan delay**: Prevents duplicate scans, allows careful scanning
 - **Professional accuracy**: Multi-read validation (3 confirmations), 10% error threshold, UPC-E support
-- **Marlboro cigarettes**: Short UPC-E codes read correctly with x-small patch size
-- **Small/encrypted barcodes**: 50% focused scan area, optimized for US retail standards
-- **Compact mobile UI**: Smaller headers, buttons, totals to maximize cart visibility
-- **Faster scanning**: 1.5 second delay between same item (was 2 sec), different items scan immediately
+- **Compact cart UI**: Horizontal layout, smaller text, maximized item visibility
 
 ### October 15, 2025 - GitHub Storage Update
 - **FREE GitHub hosting**: Pricebook stored in GitHub, auto-loads from raw URL
