@@ -188,11 +188,11 @@ export function BarcodeScanner({
     setLastDetected(code);
     lastScanTime.current = now;
 
-    // BLOCK ALL SCANS for 3 seconds
+    // BLOCK ALL SCANS for 5 seconds
     setScanBlocked(true);
     setTimeout(() => {
       setScanBlocked(false);
-    }, 3000);
+    }, 5000);
 
     // Visual and audio feedback
     setScanSuccess(true);
@@ -263,9 +263,9 @@ export function BarcodeScanner({
 
         {/* Blocked Overlay */}
         {isScanning && scanBlocked && (
-          <div className="absolute inset-0 pointer-events-none bg-amber-500/20">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-amber-500/90 text-white px-4 py-2 rounded-lg text-center">
-              <span className="text-sm font-bold">WAIT 3 SEC</span>
+          <div className="absolute inset-0 pointer-events-none bg-amber-500/30">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-amber-500/95 text-white px-5 py-3 rounded-lg text-center">
+              <span className="text-base font-bold">WAIT 5 SEC</span>
             </div>
           </div>
         )}
