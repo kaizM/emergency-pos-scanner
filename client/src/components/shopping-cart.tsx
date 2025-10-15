@@ -102,66 +102,117 @@ export function ShoppingCart({
           </div>
         ) : (
           <ScrollArea className="flex-1 -mx-4 px-4">
-            <div className="space-y-2">
+            <div className="space-y-3">
               {items.map((item, index) => (
                 <Card
                   key={item.id}
-                  className="p-3 hover-elevate"
+                  className="p-4 md:p-5 hover-elevate"
                   data-testid={`cart-item-${index}`}
                 >
-                  <div className="flex items-start gap-3">
-                    {/* Item Details */}
+                  {/* Mobile Layout - Stacked */}
+                  <div className="flex flex-col gap-3 md:hidden">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-xl leading-tight mb-1.5" data-testid={`text-item-name-${index}`}>
+                          {item.name}
+                        </h3>
+                        <p className="text-sm font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
+                          {item.barcode}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-10 w-10 text-destructive hover:text-destructive shrink-0"
+                        onClick={() => onRemoveItem(item.id)}
+                        data-testid={`button-remove-${index}`}
+                      >
+                        <X className="h-5 w-5" />
+                      </Button>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-11 w-11"
+                          onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                          data-testid={`button-decrease-${index}`}
+                        >
+                          <Minus className="h-5 w-5" />
+                        </Button>
+                        <div className="min-w-[50px] text-center">
+                          <span className="font-bold text-2xl" data-testid={`text-quantity-${index}`}>
+                            {item.quantity}
+                          </span>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-11 w-11"
+                          onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                          data-testid={`button-increase-${index}`}
+                        >
+                          <Plus className="h-5 w-5" />
+                        </Button>
+                      </div>
+                      <span className="font-bold text-2xl font-mono text-primary" data-testid={`text-item-price-${index}`}>
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Desktop Layout - Row */}
+                  <div className="hidden md:flex items-center gap-4">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-base leading-tight mb-1" data-testid={`text-item-name-${index}`}>
+                      <h3 className="font-bold text-xl leading-tight mb-1" data-testid={`text-item-name-${index}`}>
                         {item.name}
                       </h3>
-                      <p className="text-xs font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
+                      <p className="text-sm font-mono text-muted-foreground" data-testid={`text-item-barcode-${index}`}>
                         {item.barcode}
                       </p>
                     </div>
 
-                    {/* Quantity Controls */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-10 w-10"
                         onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
                         data-testid={`button-decrease-${index}`}
                       >
-                        <Minus className="h-3 w-3" />
+                        <Minus className="h-4 w-4" />
                       </Button>
-                      <div className="w-10 text-center">
-                        <span className="font-semibold" data-testid={`text-quantity-${index}`}>
+                      <div className="min-w-[60px] text-center">
+                        <span className="font-bold text-2xl" data-testid={`text-quantity-${index}`}>
                           {item.quantity}
                         </span>
                       </div>
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-10 w-10"
                         onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                         data-testid={`button-increase-${index}`}
                       >
-                        <Plus className="h-3 w-3" />
+                        <Plus className="h-4 w-4" />
                       </Button>
                     </div>
 
-                    {/* Price & Remove */}
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-lg font-mono" data-testid={`text-item-price-${index}`}>
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                        onClick={() => onRemoveItem(item.id)}
-                        data-testid={`button-remove-${index}`}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <span className="font-bold text-2xl font-mono text-primary min-w-[120px] text-right" data-testid={`text-item-price-${index}`}>
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
+                    
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 text-destructive hover:text-destructive"
+                      onClick={() => onRemoveItem(item.id)}
+                      data-testid={`button-remove-${index}`}
+                    >
+                      <X className="h-5 w-5" />
+                    </Button>
                   </div>
                 </Card>
               ))}
