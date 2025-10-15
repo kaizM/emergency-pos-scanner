@@ -117,7 +117,7 @@ export function BarcodeScanner({
 
     // Multi-read validation: Require 3 identical reads for confirmation
     lastResults.current.push(code);
-    if (lastResults.current.length > 20) {
+    if (lastResults.current.length > 15) {
       lastResults.current.shift();
     }
 
@@ -129,8 +129,8 @@ export function BarcodeScanner({
       return;
     }
 
-    // Debounce: prevent rapid duplicate scans
-    if (code === lastDetected && now - lastScanTime.current < 2000) {
+    // Debounce: prevent same barcode within 1.5 seconds
+    if (code === lastDetected && now - lastScanTime.current < 1500) {
       return;
     }
 

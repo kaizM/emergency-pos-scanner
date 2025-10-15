@@ -22,6 +22,7 @@ This application provides a fast, mobile-friendly emergency checkout system with
 - **Marlboro cigarettes**: Short UPC-E codes read correctly with x-small patch size
 - **Small/encrypted barcodes**: 50% focused scan area, optimized for US retail standards
 - **Compact mobile UI**: Smaller headers, buttons, totals to maximize cart visibility
+- **Faster scanning**: 1.5 second delay between same item (was 2 sec), different items scan immediately
 
 ### October 15, 2025 - GitHub Storage Update
 - **FREE GitHub hosting**: Pricebook stored in GitHub, auto-loads from raw URL
