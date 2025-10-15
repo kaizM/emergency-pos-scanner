@@ -26,16 +26,26 @@ export function ManualEntryDialog({
   onAddItem,
 }: ManualEntryDialogProps) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [priceInCents, setPriceInCents] = useState(""); // Store as cents (799 = $7.99)
   const [barcode, setBarcode] = useState(defaultBarcode);
   const [error, setError] = useState("");
+
+  // Format cents to dollars display (799 → $7.99)
+  const formatPrice = (cents: string): string => {
+    if (!cents) return "$0.00";
+    
+    const num = parseInt(cents) || 0;
+    const dollars = Math.floor(num / 100);
+    const centsRemainder = num % 100;
+    return `$${dollars}.${centsRemainder.toString().padStart(2, '0')}`;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    const priceValue = parseFloat(price);
-    if (!price || isNaN(priceValue) || priceValue <= 0) {
+    const priceValue = parseInt(priceInCents) / 100; // Convert cents to dollars
+    if (!priceInCents || priceValue <= 0) {
       setError("Enter a price");
       return;
     }
@@ -48,25 +58,23 @@ export function ManualEntryDialog({
 
     // Reset form
     setName("");
-    setPrice("");
+    setPriceInCents("");
     setBarcode("");
     onOpenChange(false);
   };
 
-  const addToPrice = (value: string) => {
-    if (price === "0" || !price) {
-      setPrice(value);
-    } else {
-      setPrice(price + value);
-    }
+  const addToPrice = (digit: string) => {
+    // Limit to reasonable price (max 999999 cents = $9,999.99)
+    if (priceInCents.length >= 6) return;
+    setPriceInCents(priceInCents + digit);
   };
 
   const clearPrice = () => {
-    setPrice("");
+    setPriceInCents("");
   };
 
   const backspacePrice = () => {
-    setPrice(price.slice(0, -1));
+    setPriceInCents(priceInCents.slice(0, -1));
   };
 
   return (
@@ -75,7 +83,7 @@ export function ManualEntryDialog({
         <DialogHeader>
           <DialogTitle className="text-3xl font-bold">Manual Entry</DialogTitle>
           <DialogDescription className="text-base">
-            For kitchen items or products without UPC. Just enter price.
+            Type price in cents. Example: 799 = $7.99, 1199 = $11.99
           </DialogDescription>
         </DialogHeader>
 
@@ -89,20 +97,17 @@ export function ManualEntryDialog({
             </Alert>
           )}
 
+          {/* Price Display */}
           <div className="space-y-2">
-            <Label htmlFor="item-price" className="text-xl font-bold">Price (Required)</Label>
-            <Input
-              id="item-price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="0.00"
-              className="text-4xl font-mono h-20 text-center font-bold"
-              type="number"
-              step="0.01"
-              min="0"
-              data-testid="input-manual-price"
-              autoFocus
-            />
+            <Label htmlFor="item-price" className="text-xl font-bold">Price</Label>
+            <div className="relative">
+              <div className="text-5xl font-mono text-center font-bold text-primary h-24 flex items-center justify-center border-2 border-ring rounded-md bg-muted/30">
+                {formatPrice(priceInCents)}
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
+              Enter: {priceInCents || "0"} cents
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -124,7 +129,7 @@ export function ManualEntryDialog({
                 key={num}
                 type="button"
                 variant="outline"
-                className="h-12 text-lg font-semibold"
+                className="h-14 text-2xl font-semibold"
                 onClick={() => addToPrice(num)}
                 data-testid={`button-num-${num}`}
               >
@@ -134,16 +139,16 @@ export function ManualEntryDialog({
             <Button
               type="button"
               variant="outline"
-              className="h-12 text-lg font-semibold"
+              className="h-14 text-xl font-semibold"
               onClick={clearPrice}
               data-testid="button-clear-price"
             >
-              C
+              CLEAR
             </Button>
             <Button
               type="button"
               variant="outline"
-              className="h-12 text-lg font-semibold"
+              className="h-14 text-2xl font-semibold"
               onClick={() => addToPrice("0")}
               data-testid="button-num-0"
             >
@@ -152,11 +157,11 @@ export function ManualEntryDialog({
             <Button
               type="button"
               variant="outline"
-              className="h-12 text-lg font-semibold"
-              onClick={() => addToPrice(".")}
-              data-testid="button-decimal"
+              className="h-14 text-xl font-semibold"
+              onClick={backspacePrice}
+              data-testid="button-backspace-price"
             >
-              .
+              ←
             </Button>
           </div>
 
@@ -171,14 +176,14 @@ export function ManualEntryDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="flex-1"
+              className="flex-1 min-h-12"
               data-testid="button-cancel-manual"
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="flex-1"
+              className="flex-1 min-h-12 text-lg font-bold"
               data-testid="button-add-manual"
             >
               Add to Cart

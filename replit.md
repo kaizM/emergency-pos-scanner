@@ -21,7 +21,7 @@ This application provides a fast, mobile-friendly emergency checkout system with
 - **Multi-format support**: UPC-A, UPC-E, EAN-13, EAN-8, Code 128, Code 39, Codabar, QR codes
 - **5-SECOND SCAN DELAY**: GLOBAL scan block prevents ALL scans for 5 full seconds (not just same barcode)
 - **Visual indicators**: "READY" when active, "WAIT 5 SEC" orange overlay when blocked
-- **BIG MANUAL ENTRY**: Large button for kitchen items without UPC, just enter price, name optional
+- **BIG MANUAL ENTRY**: Cash register style - type 799 = $7.99, 1199 = $11.99 (last 2 digits = cents)
 - **LARGE cart items**: 2xl names (24px), 4xl quantities/prices (36px), 56px buttons - easy to see/tap
 - **HUGE totals**: 4xl total amount (36px), lg subtotal/tax (18px), 64px checkout button
 - **Minimal scanner**: 100px viewport (15% of screen), cart gets 85% - professional layout
