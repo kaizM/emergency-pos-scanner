@@ -15,6 +15,14 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
+### October 15, 2025 - Mobile UI & Scanner Improvements
+- **Larger cart items**: 2x bigger text, separate mobile/desktop layouts for better visibility
+- **Improved scanner accuracy**: Higher resolution (1280x720 min), larger detection area, error filtering
+- **Better error handling**: Skip low-confidence scans (< 85% accuracy), clearer error messages
+- **Audio feedback**: Beep sound on successful scan for better UX
+- **Mobile optimizations**: Prevent zoom on input, larger tap targets (44px min), smooth scrolling
+- **Stacked mobile layout**: Cart items stack vertically on mobile for easier reading
+
 ### October 15, 2025 - GitHub Storage Update
 - **FREE GitHub hosting**: Pricebook stored in GitHub, auto-loads from raw URL
 - **No backend needed**: Everything runs client-side on Netlify (100% free)
