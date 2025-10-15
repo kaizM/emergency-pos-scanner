@@ -15,10 +15,10 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
-### October 15, 2025 - Professional POS System + QuaggaJS Scanner
+### October 15, 2025 - Professional POS System + ZXing Scanner
 - **PROFESSIONAL POS DESIGN**: Large readable items (130px each), retail-grade visibility, 2-3 items visible
-- **QUAGGA BARCODE SCANNER**: Using QuaggaJS for multi-format barcode detection
-- **Multi-format support**: UPC-A, UPC-E, EAN-13, EAN-8, Code 128
+- **ZXING BARCODE SCANNER**: Using ZXing library - proven mobile barcode detection that WORKS
+- **Multi-format support**: UPC-A, UPC-E, EAN-13, EAN-8, Code 128, Code 39
 - **5-SECOND SCAN DELAY**: GLOBAL scan block prevents ALL scans for 5 full seconds (not just same barcode)
 - **Visual indicators**: "READY" when active, "WAIT 5 SEC" orange overlay when blocked
 - **BIG MANUAL ENTRY**: Cash register style - type 799 = $7.99, 1199 = $11.99 (last 2 digits = cents)
