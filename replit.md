@@ -15,13 +15,13 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
-### October 15, 2025 - Mobile UI & Scanner Improvements
-- **Larger cart items**: 2x bigger text, separate mobile/desktop layouts for better visibility
-- **Improved scanner accuracy**: Higher resolution (1280x720 min), larger detection area, error filtering
-- **Better error handling**: Skip low-confidence scans (< 85% accuracy), clearer error messages
-- **Audio feedback**: Beep sound on successful scan for better UX
-- **Mobile optimizations**: Prevent zoom on input, larger tap targets (44px min), smooth scrolling
-- **Stacked mobile layout**: Cart items stack vertically on mobile for easier reading
+### October 15, 2025 - Professional Retail Scanner & BIGGER Cart
+- **MUCH BIGGER cart**: 3x larger text (32px names, 36px quantities/prices), removed ScrollArea box, fills space
+- **Professional accuracy**: Multi-read validation (3 confirmations), 10% error threshold, UPC-E support
+- **Marlboro cigarettes**: Short UPC-E codes now read correctly with x-small patch size
+- **Small/encrypted barcodes**: Optimized for US retail - 50% focused scan area, higher accuracy
+- **Larger scanner**: 400px mobile/500px desktop viewport for clearer barcode view
+- **Less scrolling**: Cart items naturally bigger, fill available space instead of cramped box
 
 ### October 15, 2025 - GitHub Storage Update
 - **FREE GitHub hosting**: Pricebook stored in GitHub, auto-loads from raw URL
