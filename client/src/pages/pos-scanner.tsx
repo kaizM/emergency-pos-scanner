@@ -7,7 +7,7 @@ import { PricebookUpload } from "@/components/pricebook-upload";
 import { Header } from "@/components/header";
 import { CartItem, Product } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Settings, Download } from "lucide-react";
+import { Upload, Settings, Download, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -197,6 +197,18 @@ export default function POSScanner() {
               onScanningChange={setIsScanning}
               onBarcodeDetected={handleBarcodeDetected}
             />
+            
+            {/* BIG Manual Entry Button */}
+            <Button
+              onClick={() => setShowManualEntry(true)}
+              variant="outline"
+              size="lg"
+              className="mt-3 min-h-16 text-xl font-bold border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              data-testid="button-manual-entry"
+            >
+              <DollarSign className="mr-3 h-7 w-7" />
+              Manual Entry (Kitchen)
+            </Button>
           </div>
 
           {/* Cart Section - Right Side */}

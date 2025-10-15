@@ -34,20 +34,15 @@ export function ManualEntryDialog({
     e.preventDefault();
     setError("");
 
-    if (!name.trim()) {
-      setError("Item name is required");
-      return;
-    }
-
     const priceValue = parseFloat(price);
     if (!price || isNaN(priceValue) || priceValue <= 0) {
-      setError("Valid price is required");
+      setError("Enter a price");
       return;
     }
 
     onAddItem({
       barcode: barcode || `MANUAL-${Date.now()}`,
-      name: name.trim(),
+      name: name.trim() || "Kitchen Item",
       price: priceValue,
     });
 
@@ -78,13 +73,13 @@ export function ManualEntryDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Manual Price Entry</DialogTitle>
-          <DialogDescription>
-            Item not found in pricebook. Enter details manually.
+          <DialogTitle className="text-3xl font-bold">Manual Entry</DialogTitle>
+          <DialogDescription className="text-base">
+            For kitchen items or products without UPC. Just enter price.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {defaultBarcode && (
             <Alert>
               <AlertCircle className="h-4 w-4" />
@@ -95,29 +90,30 @@ export function ManualEntryDialog({
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="item-name">Item Name</Label>
-            <Input
-              id="item-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter item name"
-              data-testid="input-manual-name"
-              autoFocus
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="item-price">Price</Label>
+            <Label htmlFor="item-price" className="text-xl font-bold">Price (Required)</Label>
             <Input
               id="item-price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="0.00"
-              className="text-2xl font-mono h-14 text-center"
+              className="text-4xl font-mono h-20 text-center font-bold"
               type="number"
               step="0.01"
               min="0"
               data-testid="input-manual-price"
+              autoFocus
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="item-name" className="text-base text-muted-foreground">Item Name (Optional)</Label>
+            <Input
+              id="item-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder='Leave empty for "Kitchen Item"'
+              data-testid="input-manual-name"
+              className="h-12"
             />
           </div>
 
