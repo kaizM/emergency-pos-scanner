@@ -129,8 +129,8 @@ export function BarcodeScanner({
       return;
     }
 
-    // Debounce: prevent same barcode within 1.5 seconds
-    if (code === lastDetected && now - lastScanTime.current < 1500) {
+    // Debounce: prevent same barcode within 3 seconds
+    if (code === lastDetected && now - lastScanTime.current < 3000) {
       return;
     }
 
@@ -176,7 +176,7 @@ export function BarcodeScanner({
           ${isScanning ? "border-ring" : "border-border"}
           ${scanSuccess ? "ring-4 ring-primary ring-opacity-50 scale-[1.02]" : ""}
           ${error ? "border-destructive" : ""}
-          h-[220px] md:flex-1 md:h-auto md:min-h-[500px]
+          h-[160px] md:flex-1 md:h-auto md:min-h-[500px]
         `}
         data-testid="scanner-viewport"
       >
