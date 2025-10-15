@@ -64,9 +64,22 @@ async function pushToGitHub() {
     // Stage all files
     execSync('git add -A', { stdio: 'inherit' });
 
-    // Commit
+    // Check if there are changes to commit
+    let hasChanges = false;
+    try {
+      execSync('git diff-index --quiet HEAD --', { stdio: 'pipe' });
+    } catch (e) {
+      hasChanges = true;
+    }
+
+    // Commit if there are changes
     const commitMessage = process.argv[2] || 'Deploy Emergency POS Scanner';
-    execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
+    if (hasChanges) {
+      execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
+      console.log('✅ Changes committed');
+    } else {
+      console.log('ℹ️  No changes to commit, using existing commits');
+    }
 
     // Push to GitHub
     console.log('\n🚀 Pushing to GitHub...');
