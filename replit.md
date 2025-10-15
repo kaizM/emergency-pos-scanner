@@ -15,8 +15,10 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
-### October 15, 2025 - Professional POS System + Kitchen Items
+### October 15, 2025 - Professional POS System + Better Scanner
 - **PROFESSIONAL POS DESIGN**: Large readable items (130px each), retail-grade visibility, 2-3 items visible
+- **BETTER BARCODE SCANNER**: Switched to html5-qrcode - more accurate, handles reflections, no wrong reads
+- **Multi-format support**: UPC-A, UPC-E, EAN-13, EAN-8, Code 128, Code 39, Codabar, QR codes
 - **5-SECOND SCAN DELAY**: GLOBAL scan block prevents ALL scans for 5 full seconds (not just same barcode)
 - **Visual indicators**: "READY" when active, "WAIT 5 SEC" orange overlay when blocked
 - **BIG MANUAL ENTRY**: Large button for kitchen items without UPC, just enter price, name optional
@@ -24,7 +26,6 @@ This application provides a fast, mobile-friendly emergency checkout system with
 - **HUGE totals**: 4xl total amount (36px), lg subtotal/tax (18px), 64px checkout button
 - **Minimal scanner**: 100px viewport (15% of screen), cart gets 85% - professional layout
 - **Cigarette barcodes**: UPC-E to UPC-A auto-conversion for Modisoft pricebook (Marlboro/Camel/Newport)
-- **Gilbarco compatible**: Same conversion algorithm as retail POS systems
 
 ### October 15, 2025 - GitHub Storage Update
 - **FREE GitHub hosting**: Pricebook stored in GitHub, auto-loads from raw URL
