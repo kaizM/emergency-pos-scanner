@@ -43,16 +43,21 @@ export function BarcodeScanner({
             type: "LiveStream",
             target: scannerRef.current!,
             constraints: {
-              width: { min: 640, ideal: 1920, max: 1920 },
-              height: { min: 480, ideal: 1080, max: 1080 },
+              width: { min: 1280, ideal: 1920, max: 1920 },
+              height: { min: 720, ideal: 1080, max: 1080 },
               facingMode: "environment",
-              aspectRatio: { min: 1, max: 2 },
+              aspectRatio: { min: 1.3, max: 1.8 },
+              focusMode: "continuous",
+              advanced: [
+                { zoom: 1.5 },
+                { focusDistance: 0.5 }
+              ]
             },
             area: {
-              top: "20%",
-              right: "10%",
-              left: "10%",
-              bottom: "20%",
+              top: "15%",
+              right: "5%",
+              left: "5%",
+              bottom: "15%",
             },
           },
           decoder: {
@@ -63,24 +68,27 @@ export function BarcodeScanner({
               "ean_8_reader",
               "code_128_reader",
               "code_39_reader",
-              "code_39_vin_reader",
-              "codabar_reader",
-              "i2of5_reader",
             ],
             multiple: false,
+            debug: {
+              drawBoundingBox: false,
+              showFrequency: false,
+              drawScanline: false,
+              showPattern: false
+            }
           },
           locate: true,
           locator: {
-            patchSize: "medium",
+            patchSize: "large",
             halfSample: false,
           },
-          numOfWorkers: navigator.hardwareConcurrency || 4,
-          frequency: 10,
+          numOfWorkers: Math.min(navigator.hardwareConcurrency || 4, 8),
+          frequency: 15,
         },
         (err) => {
           if (err) {
             console.error("Scanner init error:", err);
-            setError("Camera access denied or not available");
+            setError("Camera unavailable. Please check permissions and try again.");
             onScanningChange(false);
             return;
           }
@@ -91,7 +99,7 @@ export function BarcodeScanner({
       Quagga.onDetected(handleDetected);
     } catch (err) {
       console.error("Scanner error:", err);
-      setError("Failed to start camera. Please check permissions.");
+      setError("Camera error. Please refresh and allow camera access.");
       onScanningChange(false);
     }
   };
@@ -104,6 +112,17 @@ export function BarcodeScanner({
   const handleDetected = (result: any) => {
     const now = Date.now();
     const code = result.codeResult.code;
+
+    // Skip low-confidence reads (improves accuracy)
+    if (result.codeResult.decodedCodes && result.codeResult.decodedCodes.length > 0) {
+      const avgError = result.codeResult.decodedCodes.reduce((sum: number, code: any) => 
+        sum + (code.error || 0), 0) / result.codeResult.decodedCodes.length;
+      
+      // Skip if error rate too high (improves accuracy)
+      if (avgError > 0.15) {
+        return;
+      }
+    }
 
     // Debounce: prevent any scan for 1 second after last scan
     if (now - lastScanTime.current < 1000) {
@@ -118,9 +137,26 @@ export function BarcodeScanner({
     setLastDetected(code);
     lastScanTime.current = now;
 
-    // Visual feedback
+    // Visual and audio feedback
     setScanSuccess(true);
-    setTimeout(() => setScanSuccess(false), 200);
+    setTimeout(() => setScanSuccess(false), 300);
+
+    // Beep sound for successful scan
+    try {
+      const audioCtx = new AudioContext();
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.frequency.value = 800;
+      oscillator.type = 'sine';
+      gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.15);
+    } catch (e) {
+      // Audio not available, ignore
+    }
 
     onBarcodeDetected(code);
   };
