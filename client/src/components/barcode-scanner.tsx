@@ -47,7 +47,6 @@ export function BarcodeScanner({
               height: { min: 480, ideal: 1080, max: 1080 },
               facingMode: "environment",
               aspectRatio: { min: 1, max: 2 },
-              focusMode: "continuous",
             },
             area: {
               top: "20%",
@@ -77,12 +76,6 @@ export function BarcodeScanner({
           },
           numOfWorkers: navigator.hardwareConcurrency || 4,
           frequency: 10,
-          debug: {
-            drawBoundingBox: false,
-            showFrequency: false,
-            drawScanline: false,
-            showPattern: false,
-          },
         },
         (err) => {
           if (err) {

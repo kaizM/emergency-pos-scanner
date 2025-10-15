@@ -15,13 +15,21 @@ This application provides a fast, mobile-friendly emergency checkout system with
 
 ## Recent Changes
 
-### October 15, 2025
+### October 15, 2025 - Latest Update
+- **Enhanced scanner**: Advanced Modisoft-level barcode detection with multi-angle, any-distance scanning
+- **Auto-loaded pricebook**: 10,463 products from user's Vendors Price Book using UPC codes and retail prices
+- **New Transaction button**: Automatic cart clear and reset after every payment completion
+- **Improved camera**: Higher resolution (1920x1080), better autofocus, optimized detection area
+- **Multiple barcode formats**: UPC (primary), EAN, Code 128, Code 39, Codabar, i2of5
+- **Smart column detection**: Auto-detects "Scan Code" (UPC), "Item Code" (fallback), "Unit Retail" (price)
+
+### October 15, 2025 - Initial Release
 - Initial implementation of emergency POS scanner system
 - Built complete frontend with barcode scanner, shopping cart, and payment flow
 - Implemented backend API for pricebook upload and barcode lookup
 - Added Excel/CSV file processing with automatic column detection
 - Created mobile-first responsive design with dark mode support
-- Integrated QuaggaJS for multi-format barcode scanning (UPC, EAN, Code 128, Code 39)
+- Integrated QuaggaJS for multi-format barcode scanning
 
 ## Project Architecture
 
